@@ -1,0 +1,4 @@
+python3
+python3-pip
+# Ceph storage backend (from centos10-storage repo in base image)
+ceph-common
