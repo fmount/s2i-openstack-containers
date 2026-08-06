@@ -49,7 +49,7 @@ RUN pip3 install --no-cache-dir --prefix=/usr \
 
 RUN mkdir -p /configfiles/etc/cinder && \
     oslo-config-generator \
-      --config-file ${SERVICE_SRC}/etc/oslo-config-generator/cinder.conf \
+      --config-file ${SERVICE_SRC}/tools/config/cinder-config-generator.conf \
       --output-file /configfiles/etc/cinder/cinder.conf && \
     sed -i "/#pybasedir.*/d" /configfiles/etc/cinder/cinder.conf
 
@@ -77,7 +77,8 @@ RUN extrapkgs=$(cat /tmp/pythondeps.txt | grep -v '^#' | grep -v '^$' | tr '\n' 
     rm -rf /wheels /tmp/pythondeps.txt
 
 RUN mkdir -p /etc/cinder /var/log/cinder /var/lib/cinder /var/cache/cinder && \
-    chown -R cinder:cinder /etc/cinder /var/log/cinder /var/lib/cinder /var/cache/cinder
+    chown -R cinder:cinder /etc/cinder /var/log/cinder /var/lib/cinder /var/cache/cinder && \
+    chmod 770 /var/log/cinder /var/lib/cinder /var/cache/cinder
 
 COPY --from=build /configfiles/etc/cinder/cinder.conf /etc/cinder/cinder.conf
 
