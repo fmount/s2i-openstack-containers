@@ -1,4 +1,4 @@
-# Build-time dependencies for compiling Python C extensions
+# Compiler toolchain and headers for building Python C extensions
 git-core
 gcc
 gcc-c++
