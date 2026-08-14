@@ -241,7 +241,7 @@ os-resource-classes==1.1.0
     # via
     #   -c upper-constraints.txt.master
     #   -r src/watcher/requirements.txt
-os-service-types==1.8.2
+os-service-types==1.9.0
     # via
     #   -c upper-constraints.txt.master
     #   keystoneauth1
@@ -264,7 +264,7 @@ oslo-concurrency==7.6.1
     #   -c upper-constraints.txt.master
     #   -r src/watcher/requirements.txt
     #   oslo-service
-oslo-config==10.6.0
+oslo-config==10.7.0
     # via
     #   -c upper-constraints.txt.master
     #   -r src/watcher/requirements.txt
