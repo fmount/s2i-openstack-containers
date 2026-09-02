@@ -81,6 +81,15 @@
               s2i_ci_content.tag
             ),
             'backends': ['volume1']
+          }] + [{
+            'name': 'manilaShareImages',
+            'full_registry': (
+              s2i_content_provider_registry_ip ~ ':5001/' ~
+              s2i_ci_content.namespace ~
+              '/openstack-manila-share:' ~
+              s2i_ci_content.tag
+            ),
+            'backends': ['share1']
           }]
         }}
       cifmw_test_operator_stages:
@@ -115,6 +124,24 @@
       # defaults. Do not pin quay master-latest in image-mappings.yaml.
       cifmw_test_operator_tempest_image: quay.io/openstack-s2i-containers/openstack-tempest
       cifmw_test_operator_tempest_image_tag: master-latest
+      cifmw_test_operator_tempest_tempestconf_config:
+        # Overrides comes from the parent job and are required.
+        # We extend the list by adding catalog_type for manila
+        # due to https://redhat.atlassian.net/browse/OSPRH-36292
+        # and we will remove it once the associated Jira is
+        # resolved.
+        # Also we have no way to append a single key to the existing
+        # override set, hence the list has been re-proposed.
+        overrides: |
+          compute-feature-enabled.dhcp_domain ''
+          dashboard.dashboard_url https://horizon-openstack.apps-crc.testing/dashboard/
+          dashboard.login_url https://horizon-openstack.apps-crc.testing/dashboard/auth/login/
+          dashboard.disable_ssl_certificate_validation True
+          identity.v3_endpoint_type public
+          service_available.swift false
+          service_available.cinder false
+          service_available.horizon True
+          share.catalog_type sharev2
       s2i_ci_skip_os_custom_images:
         # https://redhat.atlassian.net/browse/OSPRH-28744
         - neutronAPIImage
@@ -122,14 +149,8 @@
         - edpmNeutronMetadataAgentImage
         # Waiting for https://github.com/openstack-k8s-operators/openstack-operator/pull/2055
         - mariadbImage
-        # Glance seems good already to remove from here and confirm
-        - glanceAPIImage
         # https://redhat.atlassian.net/browse/OSPRH-36259
         - novaAPIImage
-        # https://redhat.atlassian.net/browse/OSPRH-36292
-        - manilaAPIImage
-        # https://redhat.atlassian.net/browse/OSPRH-36292
-        - manilaSchedulerImage
       s2i_tempest_include_list: |
         tempest.api.compute.servers.test_create_server.ServersTestJSON.test_list_servers
         tempest.api.compute.servers.test_server_actions.ServerActionsTestJSON.test_reboot_server_hard

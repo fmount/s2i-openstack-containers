@@ -76,10 +76,7 @@ SKIP_KEYS="$(printf '%s\n' \
   neutronAPIImage \
   edpmNeutronMetadataAgentImage \
   mariadbImage \
-  manilaAPIImage \
-  manilaSchedulerImage \
-  novaAPIImage \
-  glanceAPIImage)"
+  novaAPIImage)"
 
 # Neutron/OVN keys that must still be injected during deploy-validation.
 READY_NEUTRON_OVN_KEYS="$(printf '%s\n' \
